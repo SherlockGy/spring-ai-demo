@@ -3,6 +3,8 @@ package com.sherlockgy.springai.chatclient;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.deepseek.DeepSeekChatModel;
+import org.springframework.ai.ollama.OllamaChatModel;
+import org.springframework.ai.ollama.api.OllamaOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,6 +35,21 @@ public class TestChatClient {
                 .call()
                 .content();
         System.out.println(content);
+    }
+
+    /**
+     * 指定 ollama 模型测试
+     */
+    @Test
+    public void testOllamaOrderModel(@Autowired OllamaChatModel ollamaChatModel) {
+        // 指定模型为 qwen2.5:0.5b
+        OllamaOptions ollamaChatOptions = OllamaOptions.builder().model("qwen2.5:0.5b").build();
+        String response = ChatClient.builder(ollamaChatModel)
+                .build()
+                .prompt("你好，你是谁？")
+                .options(ollamaChatOptions)
+                .call().content();
+        System.out.println(response);
     }
 
     @Test
